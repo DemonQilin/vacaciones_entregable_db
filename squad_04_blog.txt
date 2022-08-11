@@ -1,0 +1,136 @@
+-- CREANDO TABLAS
+CREATE TABLE "users" (
+  "id" serial PRIMARY KEY,
+  "name" varchar(25) NOT NULL,
+  "email" varchar(30) UNIQUE NOT NULL,
+  "password" varchar NOT NULL,
+  "age" int NOT NULL,
+  "is_logged" boolean NOT NULL DEFAULT false,
+  "country" varchar(15) NOT NULL,
+  "created_at" timestamp DEFAULT 'now()',
+  "updated_at" timestamp DEFAULT 'now()'
+);
+
+CREATE TABLE "post" (
+  "id" serial PRIMARY KEY,
+  "title" varchar(30) NOT NULL,
+  "content" text NOT NULL,
+  "user_id" int NOT NULL,
+  "created_at" timestamp DEFAULT 'now()',
+  "updated_at" timestamp DEFAULT 'now()'
+);
+
+CREATE TABLE "comments" (
+  "id" serial PRIMARY KEY,
+  "content" text NOT NULL,
+  "user_id" int NOT NULL,
+  "post_id" int NOT NULL,
+  "created_at" timestamp DEFAULT 'now()',
+  "updated_at" timestamp DEFAULT 'now()'
+);
+
+CREATE TABLE "topics" (
+  "id" serial PRIMARY KEY,
+  "name" varchar NOT NULL
+);
+
+CREATE TABLE "post_topics" (
+  "id" serial PRIMARY KEY,
+  "post_id" int NOT NULL,
+  "topic_id" int NOT NULL
+);
+
+ALTER TABLE "post" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "comments" ADD FOREIGN KEY ("user_id") REFERENCES "users" ("id");
+
+ALTER TABLE "comments" ADD FOREIGN KEY ("post_id") REFERENCES "post" ("id");
+
+ALTER TABLE "post_topics" ADD FOREIGN KEY ("topic_id") REFERENCES "topics" ("id");
+
+ALTER TABLE "post_topics" ADD FOREIGN KEY ("post_id") REFERENCES "post" ("id");
+
+-- AGREGANDO DATOS A LAS TABLAS
+insert into users (
+	name,
+	email,
+	password,
+	age,
+	country
+) values (
+	'Juanes Velez',
+	'juanexitomoxito@academlo.com',
+	'12345++JV',
+	22,
+	'Colombia'
+),(
+	'Andres',
+	'anbdresxitomoxito@academlo.com',
+	'12345++A',
+	23,
+	'Venezuela'
+),(
+	'Miguel',
+	'miguelxitomoxito@academlo.com',
+	'12345++M',
+	21,
+	'Peru'
+);
+
+insert into topics (
+	name
+) values ('Tecnologia'), ('Informatica'), ('Diseño'), ('Seguridad'), ('Politica');
+
+
+insert into post (
+	title,
+	"content",
+	user_id
+) values (
+	'Curso de React',
+	'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit quaerat ipsum, ratione magni eaque obcaecati, voluptates debitis labore nesciunt cupiditate asperiores quod tenetur dolor totam natus sed in voluptatibus? Repellendus?',
+	3
+),(
+	'Curso de Photoshop',
+	'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit quaerat ipsum, ratione magni eaque obcaecati, voluptates debitis labore nesciunt cupiditate asperiores quod tenetur dolor totam natus sed in voluptatibus? Repellendus?',
+	1
+),(
+	'Uso de c++ para firewall',
+	'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit quaerat ipsum, ratione magni eaque obcaecati, voluptates debitis labore nesciunt cupiditate asperiores quod tenetur dolor totam natus sed in voluptatibus? Repellendus?',
+	2
+),(
+	'Drones de vigilancia',
+	'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Impedit quaerat ipsum, ratione magni eaque obcaecati, voluptates debitis labore nesciunt cupiditate asperiores quod tenetur dolor totam natus sed in voluptatibus? Repellendus?',
+	3
+);
+
+insert into post_topics (
+	post_id,
+	topic_id
+) values (1,1), (1,2), (2,1), (2,3), (3,1), (3,3), (3,2), (4,1), (4,4), (4,5);
+
+insert into "comments" (
+	"content",
+	user_id,
+	post_id
+) values (
+	'Comment A Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quam vel! Voluptates minima esse suscipit hic iusto sapiente doloremque veniam eveniet maiores dolorum et, ab, accusamus, facilis ex! Ex, saepe.',
+	1,
+	2
+), (
+	'Comment B Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quam vel! Voluptates minima esse suscipit hic iusto sapiente doloremque veniam eveniet maiores dolorum et, ab, accusamus, facilis ex! Ex, saepe.',
+	3,
+	4
+), (
+	'Comment C Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quam vel! Voluptates minima esse suscipit hic iusto sapiente doloremque veniam eveniet maiores dolorum et, ab, accusamus, facilis ex! Ex, saepe.',
+	2,
+	3
+),(
+	'Comment D Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quam vel! Voluptates minima esse suscipit hic iusto sapiente doloremque veniam eveniet maiores dolorum et, ab, accusamus, facilis ex! Ex, saepe.',
+	1,
+	1
+), (
+	'Comment E Lorem ipsum dolor sit amet consectetur adipisicing elit. Exercitationem, quam vel! Voluptates minima esse suscipit hic iusto sapiente doloremque veniam eveniet maiores dolorum et, ab, accusamus, facilis ex! Ex, saepe.',
+	3,
+	2
+);
